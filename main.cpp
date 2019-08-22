@@ -8,8 +8,8 @@
 #include <cassert>
 #include <limits>
 
-#include <chrono>
-#include <thread>
+// #include <chrono>
+// #include <thread>
 
 namespace GAMEAI
 {
@@ -107,12 +107,14 @@ public:
             int x = chess.x * 2 + 2;
             int y = chess.y * 2 + 3;
             walls[x][y] = walls[x + 1][y] = walls[x + 2][y] = 1;
+            --wallcnt[1];
         }
         if (chess.type == QuoridorBoard::Chess::ChessType::HorizontalWall)
         {
             int x = chess.x * 2 + 3;
             int y = chess.y * 2 + 2;
             walls[x][y] = walls[x][y + 1] = walls[x][y + 2] = 1;
+            --wallcnt[1];
         }
     }
 
@@ -690,13 +692,18 @@ int main()
     Q.Initialize();
     bool fp = true;
     QuoridorBoard::Chess chess;
-    chess.type = QuoridorBoard::Chess::HorizontalWall;
+    chess.type = QuoridorBoard::Chess::BlackChess;
     chess.x = 0;
     chess.y = 0;
 
-    Q.move_enemy_chess(chess);
     Q.Show();
 
+    QuoridorBoard::Chess NextChess;
+    Move NextMove = DepthLimitNegamax(Q, 3, 0);
+    NextChess = Q.get_target_chess_from_move(NextMove);
+    Q.MakeAction(NextMove.second, 0);
+
+    Q.Show();
     // while (!Q.IsEndGame())
     // {
     //     // std::this_thread::sleep_for(std::chrono::milliseconds(2000));
