@@ -55,6 +55,69 @@ bool debugflag = true;
 //type QuoridorBoard
 class QuoridorBoard
 {
+public:
+    class Chess
+    {
+    public:
+        enum ChessType
+        {
+            WhiteChess,
+            BlackChess,
+            VerticalWall,
+            HorizontalWall
+        };
+        int x; //0..7 for chess, 0..6 for wall
+        int y; //0..7 for chess, 0..6 for wall
+        ChessType type;
+    };
+
+    Chess get_target_chess_from_move(const Move &move) const
+    {
+        Chess to_return;
+        if (IsMovingThePawn(move.second))
+        {
+            to_return.type = Chess::ChessType::WhiteChess;
+            to_return.x = (move.second.first / 2) - 1;
+            to_return.y = (move.second.second / 2) - 1;
+        }
+        else if (IsVertical(move.second))
+        {
+            to_return.type = Chess::ChessType::VerticalWall;
+            to_return.x = (move.second.first) / 2 - 1;
+            to_return.y = (move.second.second - 1) / 2 - 1;
+        }
+        else
+        {
+            to_return.type = Chess::ChessType::HorizontalWall;
+            to_return.x = (move.second.first - 1) / 2 - 1;
+            to_return.y = (move.second.second) / 2 - 1;
+        }
+
+        return to_return;
+    }
+
+    void move_enemy_chess(Chess chess)
+    {
+        if (chess.type == QuoridorBoard::Chess::ChessType::BlackChess)
+        {
+            location[1] = make_pair<int, int>(chess.x * 2 + 2, chess.y * 2 + 2);
+        }
+        if (chess.type == QuoridorBoard::Chess::ChessType::VerticalWall)
+        {
+            int x = chess.x * 2 + 2;
+            int y = chess.y * 2 + 3;
+            walls[x][y] = walls[x + 1][y] = walls[x + 2][y] = 1;
+        }
+        if (chess.type == QuoridorBoard::Chess::ChessType::HorizontalWall)
+        {
+            int x = chess.x * 2 + 3;
+            int y = chess.y * 2 + 2;
+            walls[x][y] = walls[x][y + 1] = walls[x][y + 2] = 1;
+        }
+    }
+
+    pair<int, int> location[2];
+
 private:
     static inline int action_key(pair<int, int> key)
     {
@@ -94,7 +157,6 @@ private:
         HasActionMapInited = true;
     }
 
-    pair<int, int> location[2];
     int wallcnt[2], destrow[2];
     short int walls[BOARDSIZE * 2 + 2][BOARDSIZE * 2 + 2];
     static int vis[BOARDSIZE * 2 + 2][BOARDSIZE * 2 + 2];
@@ -384,7 +446,6 @@ public:
         return wallcnt[player];
     }
 
-
     bool inline IsBoothEndGame() const
     {
         if (location[0].first == destrow[0] && location[1].first == destrow[1])
@@ -628,24 +689,32 @@ int main()
     QuoridorBoard Q;
     Q.Initialize();
     bool fp = true;
-    while (!Q.IsEndGame() )
-    {
+    QuoridorBoard::Chess chess;
+    chess.type = QuoridorBoard::Chess::HorizontalWall;
+    chess.x = 0;
+    chess.y = 0;
 
-        // std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-        if (fp)
-        {
-            Q.MakeAction(DepthLimitNegamax(Q, 3, 0).second, 0);
-            Q.Show();
-        }
-        else
-        {
-            QuoridorBoard temp = Q.GetCanonicalBoard(1);
-            temp.MakeAction(DepthLimitNegamax(temp, 3, 0).second, 0);
-            Q=temp.GetCanonicalBoard(1);
-            Q.Show();
-        }
-        fp = !fp;
-    }
+    Q.move_enemy_chess(chess);
+    Q.Show();
+
+    // while (!Q.IsEndGame())
+    // {
+    //     // std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+    //     if (fp)
+    //     {
+    //         Q.MakeAction(DepthLimitNegamax(Q, 3, 0).second, 0);
+    //         Q.Show();
+    //     }
+    //     else
+    //     {
+    //         QuoridorBoard temp = Q.GetCanonicalBoard(1);
+    //         temp.MakeAction(DepthLimitNegamax(temp, 3, 0).second, 0);
+    //         Q = temp.GetCanonicalBoard(1);
+    //         Q.Show();
+    //     }
+    //     fp = !fp;
+    // }
+
     // DepthLimitNegamax(Q,1);
     // std::cout<<DepthLimitNegamax(Q,2).first<<std::endl;
     // Q.MakeAction(DepthLimitNegamax(Q,2).second,0);
