@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/silver/MyProjects/Cpp/Quoridor-alpha-beta-purning/build",
+  "command": "/usr/bin/g++ -g -o CMakeFiles/quoridor_ai.dir/main.cpp.o -c /home/silver/MyProjects/Cpp/Quoridor-alpha-beta-purning/main.cpp",
+  "file": "/home/silver/MyProjects/Cpp/Quoridor-alpha-beta-purning/main.cpp"
+}
+]

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Site BuildName="Linux-g++"
+	BuildStamp="20230819-0902-Experimental"
+	Name="silver-VivoBook-ASUSLaptop-X421UA"
+	Generator="ctest-3.22.1"
+	CompilerName="/usr/bin/g++"
+	CompilerVersion="11.4.0"
+	OSName="Linux"
+	Hostname="silver-VivoBook-ASUSLaptop-X421UA"
+	OSRelease="6.2.0-26-generic"
+	OSVersion="#26~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu Jul 13 16:27:29 UTC 2"
+	OSPlatform="x86_64"
+	Is64Bits="1"
+	VendorString="AuthenticAMD"
+	VendorID="Advanced Micro Devices"
+	FamilyID="23"
+	ModelID="104"
+	ProcessorCacheSize="512"
+	NumberOfLogicalCPU="12"
+	NumberOfPhysicalCPU="6"
+	TotalVirtualMemory="8191"
+	TotalPhysicalMemory="7326"
+	LogicalProcessorsPerPhysical="2"
+	ProcessorClockFrequency="1512.37"
+	>
+	<Testing>
+		<StartDateTime>Aug 19 17:03 HKT</StartDateTime>
+		<StartTestTime>1692435792</StartTestTime>
+		<TestList/>
+		<EndDateTime>Aug 19 17:03 HKT</EndDateTime>
+		<EndTestTime>1692435792</EndTestTime>
+		<ElapsedMinutes>0</ElapsedMinutes>
+	</Testing>
+</Site>
